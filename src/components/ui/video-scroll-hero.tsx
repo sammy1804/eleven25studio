@@ -60,8 +60,8 @@ export default function VideoScrollHero({
           style={{
             transform: `scale(${scale})`,
             transformOrigin: 'center center',
-            width: '85vw',
-            height: '70vh',
+            width: '90vw',
+            height: 'clamp(260px, 70vh, 900px)',
             borderRadius: scale > 0.85 ? `${(1 - scale) * 24}px` : '20px',
             transition: 'border-radius 0.05s linear',
           }}

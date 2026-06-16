@@ -121,10 +121,10 @@ export default function CorporatePage() {
       <section className="bg-[#111111]">
         <div className="max-w-[1600px] mx-auto px-6 md:px-10 py-24 md:py-32">
           <FadeItem>
-            <div className="flex items-end justify-between mb-16">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-12 md:mb-16">
               <div>
                 <p className="text-[11px] tracking-[0.35em] uppercase text-[#7A7A72] font-sans mb-4">Also We Shoot</p>
-                <h2 className="font-display text-[44px] md:text-[64px] font-light italic text-[#F2F0EB] leading-none">
+                <h2 className="font-display text-[40px] md:text-[64px] font-light italic text-[#F2F0EB] leading-none">
                   More Categories
                 </h2>
               </div>

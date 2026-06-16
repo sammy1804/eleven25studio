@@ -48,10 +48,10 @@ export default function FilmsPage() {
             <p className="text-[11px] tracking-[0.35em] uppercase text-[#F2F0EB]/60 font-sans mb-2">
               eleven25 studio
             </p>
-            <h1 className="font-display text-[60px] md:text-[90px] font-light italic text-[#F2F0EB] leading-none">
+            <h1 className="font-display text-[48px] md:text-[90px] font-light italic text-[#F2F0EB] leading-none">
               Films
             </h1>
-            <p className="font-sans text-[13px] text-[#F2F0EB]/50 mt-3">
+            <p className="font-sans text-[11px] md:text-[13px] text-[#F2F0EB]/50 mt-3">
               Scroll to navigate · Architecture & Corporate
             </p>
           </motion.div>

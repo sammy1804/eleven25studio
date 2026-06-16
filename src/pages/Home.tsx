@@ -7,6 +7,7 @@ import {
   AnimatePresence,
   type MotionValue,
 } from 'framer-motion'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 /* ── Images ── */
 const IMAGES = [
@@ -22,17 +23,11 @@ const IMAGES = [
 
 const VISIBLE = 5
 
-/*
-  Slot geometry as numbers so framer-motion can interpolate continuously.
-  slotPos 0 = leftmost/smallest, slotPos 4 = rightmost/largest.
-  Widths: 8+14+20+26+32 = 100vw (no gaps).
-*/
 const SLOT_INPUT    = [-0.6, 0,  1,  2,  3,  4,  4.6]
-const LEFT_OUTPUT   = [-10,  0,  8,  22, 42, 68, 102]   // vw
-const WIDTH_OUTPUT  = [  8,  8, 14,  20, 26, 32,  32]   // vw
-const HEIGHT_OUTPUT = [ 22, 22, 32,  42, 50, 55,  55]   // vh
+const LEFT_OUTPUT   = [-10,  0,  8,  22, 42, 68, 102]
+const WIDTH_OUTPUT  = [  8,  8, 14,  20, 26, 32,  32]
+const HEIGHT_OUTPUT = [ 22, 22, 32,  42, 50, 55,  55]
 
-/* ── Per-image component — hooks stay at component level ── */
 function ImageSlot({
   phase,
   imgIndex,
@@ -46,13 +41,10 @@ function ImageSlot({
 }) {
   const [hovered, setHovered] = useState(false)
 
-  /* slotPos = imgIndex - phase: image moves left as phase grows */
   const slotPos  = useTransform(phase, (p) => imgIndex - p)
-
   const leftNum  = useTransform(slotPos, SLOT_INPUT, LEFT_OUTPUT)
   const widthNum = useTransform(slotPos, SLOT_INPUT, WIDTH_OUTPUT)
   const hgtNum   = useTransform(slotPos, SLOT_INPUT, HEIGHT_OUTPUT)
-
   const left    = useTransform(leftNum,  (v) => `${v}vw`)
   const width   = useTransform(widthNum, (v) => `${v}vw`)
   const height  = useTransform(hgtNum,   (v) => `${v}vh`)
@@ -60,20 +52,10 @@ function ImageSlot({
 
   return (
     <motion.div
-      style={{
-        position: 'absolute',
-        bottom: 0,
-        left,
-        width,
-        height,
-        opacity,
-        zIndex: imgIndex + 1,
-        overflow: 'visible',
-      }}
+      style={{ position: 'absolute', bottom: 0, left, width, height, opacity, zIndex: imgIndex + 1, overflow: 'visible' }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
-      {/* Label above frame on hover */}
       <AnimatePresence>
         {hovered && (
           <motion.div
@@ -93,34 +75,13 @@ function ImageSlot({
               zIndex: 30,
             }}
           >
-            <span
-              style={{
-                width: 6,
-                height: 6,
-                borderRadius: '50%',
-                background: '#B8956A',
-                flexShrink: 0,
-                display: 'block',
-              }}
-            />
-            <span
-              style={{
-                fontFamily: "'Open Runde', sans-serif",
-                fontWeight: 600,
-                fontSize: 11,
-                letterSpacing: '0.1em',
-                textTransform: 'uppercase',
-                color: '#0A0A0A',
-                whiteSpace: 'nowrap',
-              }}
-            >
+            <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#B8956A', flexShrink: 0, display: 'block' }} />
+            <span style={{ fontFamily: "'Open Runde', sans-serif", fontWeight: 600, fontSize: 11, letterSpacing: '0.1em', textTransform: 'uppercase', color: '#0A0A0A', whiteSpace: 'nowrap' }}>
               {label}
             </span>
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Image frame — overflow:hidden clips zoom */}
       <div style={{ width: '100%', height: '100%', overflow: 'hidden', cursor: 'pointer' }}>
         <motion.img
           src={src}
@@ -135,45 +96,102 @@ function ImageSlot({
   )
 }
 
+/* ── Mobile layout — simple hero + image grid ── */
+function MobileHome() {
+  return (
+    <div style={{ background: '#F5F1EA', minHeight: '100vh' }}>
+      {/* Hero text */}
+      <div style={{ paddingTop: 100, paddingLeft: 24, paddingRight: 24, paddingBottom: 32 }}>
+        <h1
+          style={{
+            fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif",
+            fontSize: 'clamp(52px, 16vw, 80px)',
+            lineHeight: 0.88,
+            textTransform: 'uppercase',
+            color: '#0A0A0A',
+            fontWeight: 400,
+            letterSpacing: '-0.01em',
+            margin: 0,
+          }}
+        >
+          Visual<br />Stories.
+        </h1>
+        <div style={{ marginTop: '1.5rem' }}>
+          <p style={{
+            fontFamily: "'Open Runde', sans-serif",
+            fontWeight: 600,
+            fontSize: 11,
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            color: '#0A0A0A',
+            lineHeight: 1.7,
+            margin: 0,
+          }}>
+            Eleven25 — Photography &amp; Film Studio in Chennai,<br />
+            Crafting Visual Narratives for Architecture &amp; Brands.
+          </p>
+          <p style={{
+            fontFamily: "'Open Runde', sans-serif",
+            fontWeight: 600,
+            fontSize: 10,
+            letterSpacing: '0.05em',
+            textTransform: 'uppercase',
+            color: '#8A847C',
+            marginTop: '0.4em',
+          }}>
+            Architecture. Corporate. Films. Events.
+          </p>
+        </div>
+      </div>
+
+      {/* 2-column image grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4, padding: '0 4px 60px' }}>
+        {IMAGES.map((img, i) => (
+          <div
+            key={img.src}
+            style={{ overflow: 'hidden', aspectRatio: i % 3 === 0 ? '3/4' : '4/3' }}
+          >
+            <img
+              src={img.src}
+              alt={img.label}
+              loading={i < 4 ? 'eager' : 'lazy'}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 /* ── Page ── */
 export default function Home() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const isMobile = useIsMobile()
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   })
 
-  /* Spring adds inertia / momentum lag — feels cinematic, weightless */
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 65,
     damping: 22,
     restDelta: 0.001,
   })
 
-  /* phase 0 → shows images [0…4] in slots [0…4]
-     phase MAX → shows images [3…7] in slots [0…4]      */
   const phase = useTransform(
     smoothProgress,
     [0, 1],
     [0, IMAGES.length - VISIBLE],
   )
 
-  return (
-    /* Tall outer div creates the scroll distance — 800vh gives ~200vh per image */
-    <div ref={containerRef} style={{ height: '800vh' }}>
+  if (isMobile) return <MobileHome />
 
-      {/* Sticky viewport */}
-      <div
-        style={{
-          position: 'sticky',
-          top: 0,
-          height: '100vh',
-          overflow: 'hidden',
-          background: '#F5F1EA',
-        }}
-      >
-        {/* ── Fixed text — never moves, never fades ── */}
+  return (
+    <div ref={containerRef} style={{ height: '800vh' }}>
+      <div style={{ position: 'sticky', top: 0, height: '100vh', overflow: 'hidden', background: '#F5F1EA' }}>
+        {/* Fixed text */}
         <div
           style={{
             position: 'absolute',
@@ -189,7 +207,7 @@ export default function Home() {
         >
           <h1
             style={{
-              fontFamily: "'-apple-system', 'BlinkMacSystemFont', 'SF Pro Display', 'Helvetica Neue', sans-serif",
+              fontFamily: "-apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif",
               fontSize: 'clamp(60px, 11.5vw, 175px)',
               lineHeight: 0.88,
               textTransform: 'uppercase',
@@ -203,46 +221,35 @@ export default function Home() {
           </h1>
 
           <div style={{ marginTop: '2.2vh' }}>
-            <p
-              style={{
-                fontFamily: "'Open Runde', sans-serif",
-                fontWeight: 600,
-                fontSize: 'clamp(10px, 1vw, 12px)',
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-                color: '#0A0A0A',
-                lineHeight: 1.7,
-                margin: 0,
-              }}
-            >
+            <p style={{
+              fontFamily: "'Open Runde', sans-serif",
+              fontWeight: 600,
+              fontSize: 'clamp(10px, 1vw, 12px)',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              color: '#0A0A0A',
+              lineHeight: 1.7,
+              margin: 0,
+            }}>
               Eleven25 — Photography &amp; Film Studio in Chennai,<br />
               Crafting Visual Narratives for Architecture &amp; Brands.
             </p>
-            <p
-              style={{
-                fontFamily: "'Open Runde', sans-serif",
-                fontWeight: 600,
-                fontSize: 'clamp(9px, 0.85vw, 11px)',
-                letterSpacing: '0.05em',
-                textTransform: 'uppercase',
-                color: '#8A847C',
-                marginTop: '0.4em',
-              }}
-            >
+            <p style={{
+              fontFamily: "'Open Runde', sans-serif",
+              fontWeight: 600,
+              fontSize: 'clamp(9px, 0.85vw, 11px)',
+              letterSpacing: '0.05em',
+              textTransform: 'uppercase',
+              color: '#8A847C',
+              marginTop: '0.4em',
+            }}>
               Architecture. Corporate. Films. Events.
             </p>
           </div>
         </div>
 
-        {/* ── Scroll-driven image gallery — all 8 images, positions driven by spring ── */}
         {IMAGES.map((img, i) => (
-          <ImageSlot
-            key={img.src}
-            phase={phase}
-            imgIndex={i}
-            src={img.src}
-            label={img.label}
-          />
+          <ImageSlot key={img.src} phase={phase} imgIndex={i} src={img.src} label={img.label} />
         ))}
 
         {/* Scroll indicator */}
@@ -260,16 +267,14 @@ export default function Home() {
             pointerEvents: 'none',
           }}
         >
-          <span
-            style={{
-              fontFamily: "'Open Runde', sans-serif",
-              fontWeight: 600,
-              fontSize: 9,
-              letterSpacing: '0.35em',
-              textTransform: 'uppercase',
-              color: 'rgba(10,10,10,0.3)',
-            }}
-          >
+          <span style={{
+            fontFamily: "'Open Runde', sans-serif",
+            fontWeight: 600,
+            fontSize: 9,
+            letterSpacing: '0.35em',
+            textTransform: 'uppercase',
+            color: 'rgba(10,10,10,0.3)',
+          }}>
             Scroll
           </span>
         </div>
