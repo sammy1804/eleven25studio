@@ -21,7 +21,7 @@ export default function Footer() {
               Architecture, Photography, Films & Experiences — crafted with intention under one creative studio.
             </p>
             <p className="font-sans text-[12px] tracking-wider uppercase" style={{ color: '#B8956A' }}>
-              Chennai, India
+              Bangalore, India
             </p>
           </div>
 

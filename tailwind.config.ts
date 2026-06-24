@@ -26,7 +26,8 @@ export default {
         card:     '#1C1A17',
       },
       fontFamily: {
-        display: ['-apple-system', 'BlinkMacSystemFont', '"SF Pro Display"', '"Helvetica Neue"', 'system-ui', 'sans-serif'],
+        display: ['Poppins', 'system-ui', 'sans-serif'],
+        body:    ['"DM Sans"', 'system-ui', 'sans-serif'],
         sans:    ['"Open Runde"', 'system-ui', 'sans-serif'],
       },
       transitionTimingFunction: {

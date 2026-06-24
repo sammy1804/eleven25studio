@@ -51,7 +51,6 @@ function ServiceItem({ service, index }: { service: typeof SERVICES[0]; index: n
 
   return (
     <div ref={ref} style={{ borderTop: `1px solid ${T.border}`, paddingTop: 60, paddingBottom: 0 }}>
-      {/* Title + desc — centered */}
       <motion.div
         className="text-center"
         initial={{ opacity: 0, y: 30 }}
@@ -88,7 +87,6 @@ function ServiceItem({ service, index }: { service: typeof SERVICES[0]; index: n
         </a>
       </motion.div>
 
-      {/* Full-width image */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={inView ? { opacity: 1, y: 0 } : {}}
@@ -167,7 +165,6 @@ export default function ServicesPage() {
             <ServiceItem key={service.title} service={service} index={i} />
           ))}
         </div>
-        {/* Bottom border */}
         <div style={{ borderTop: `1px solid ${T.border}`, marginTop: 60 }} />
       </div>
 

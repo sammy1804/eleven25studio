@@ -6,11 +6,16 @@ import Footer from './components/Footer'
 import LoadingScreen from './components/LoadingScreen'
 import Home from './pages/Home'
 import ArchitecturePage from './pages/ArchitecturePage'
+import FashionPage from './pages/FashionPage'
+import EventingPage from './pages/EventingPage'
+import ProductPage from './pages/ProductPage'
 import FilmsPage from './pages/FilmsPage'
 import CorporatePage from './pages/CorporatePage'
 import CategoryPage from './pages/CategoryPage'
+import EventsPage from './pages/EventsPage'
 import ServicesPage from './pages/ServicesPage'
 import AboutPage from './pages/AboutPage'
+import ContactPage from './pages/ContactPage'
 
 // Lazy-load gallery so a WebGL crash can't affect the rest of the app
 const GalleryPage = lazy(() => import('./pages/GalleryPage'))
@@ -77,10 +82,13 @@ function AnimatedRoutes() {
           <Route path="/films" element={<FilmsPage />} />
           <Route path="/corporate" element={<CorporatePage />} />
           <Route path="/wedding" element={<CategoryPage />} />
-          <Route path="/fashion" element={<CategoryPage />} />
-          <Route path="/events" element={<CategoryPage />} />
+          <Route path="/fashion" element={<FashionPage />} />
+          <Route path="/eventing" element={<EventingPage />} />
+          <Route path="/product" element={<ProductPage />} />
+          <Route path="/events" element={<EventsPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
         </Routes>
         {!hideFooter && <Footer />}
       </motion.div>

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 320" fill="none">
+  <!-- ELEVEN in heavy black -->
+  <text
+    x="12"
+    y="218"
+    font-family="'Arial Black', 'Franklin Gothic Heavy', 'Impact', sans-serif"
+    font-weight="900"
+    font-size="228"
+    fill="#0A0A0A"
+    letter-spacing="-6"
+  >ELEVEN</text>
+
+  <!-- 25 in blue -->
+  <text
+    x="660"
+    y="218"
+    font-family="'Arial Black', 'Franklin Gothic Heavy', 'Impact', sans-serif"
+    font-weight="900"
+    font-size="228"
+    fill="#1B9FE0"
+    letter-spacing="-6"
+  >25</text>
+
+  <!-- Horizontal rule -->
+  <line x1="12" y1="244" x2="988" y2="244" stroke="#4A4A4A" stroke-width="1.8"/>
+
+  <!-- STUDIOS spaced -->
+  <text
+    x="500"
+    y="302"
+    font-family="'Arial', 'Helvetica Neue', sans-serif"
+    font-weight="400"
+    font-size="46"
+    fill="#555555"
+    letter-spacing="26"
+    text-anchor="middle"
+  >STUDIOS</text>
+</svg>
