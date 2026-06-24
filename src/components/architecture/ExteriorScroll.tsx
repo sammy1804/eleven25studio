@@ -1,10 +1,10 @@
 import { useRef, useState, useEffect, useCallback } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 
-const GOLD = '#C9A35F'
+const GOLD = '#0096E6'
 
 const PROJECTS = [
-  { name: 'The Cube House',    location: 'Chennai, Tamil Nadu',      seed: 'ext1' },
+  { name: 'The Cube House',    location: 'Bangalore, Tamil Nadu',      seed: 'ext1' },
   { name: 'Glass Pavilion',    location: 'Kochi, Kerala',            seed: 'ext2' },
   { name: 'Desert Residence',  location: 'Jodhpur, Rajasthan',       seed: 'ext3' },
   { name: 'Riverside Studio',  location: 'Bengaluru, Karnataka',     seed: 'ext4' },

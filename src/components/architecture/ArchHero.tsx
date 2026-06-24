@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
-const GOLD = '#C9A35F'
+const GOLD = '#0096E6'
 const HEADLINE_WORDS = ['Spaces.', 'Designed.', 'Documented.']
 const ANCHORS = [
   { label: 'Exterior', href: '#exterior' },
@@ -59,7 +59,7 @@ export default function ArchHero() {
 
           <div style={{ marginBottom: 24 }}>
             {HEADLINE_WORDS.map((word, i) => (
-              <div key={word} style={{ overflow: 'hidden' }}>
+              <div key={word} style={{ overflow: 'hidden', paddingBottom: '0.15em' }}>
                 <motion.div
                   initial={{ y: '110%' }}
                   animate={{ y: 0 }}
@@ -68,7 +68,7 @@ export default function ArchHero() {
                     fontFamily: "'Poppins', sans-serif",
                     fontWeight: 300,
                     fontSize: isMobile ? 'clamp(44px, 12vw, 72px)' : 'clamp(56px, 7vw, 100px)',
-                    lineHeight: 0.9,
+                    lineHeight: 1.05,
                     letterSpacing: '-0.04em',
                     color: '#1A1A1A',
                   }}

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import VideoLightbox from './VideoLightbox'
 
-const GOLD = '#C9A35F'
+const GOLD = '#0096E6'
 
 const FILMS = [
   { title: 'Lattice',        duration: '4:32', desc: 'A journey through light and concrete',          youtubeId: 'YFJHkFrCFGU', thumb: 'https://picsum.photos/seed/film1/800/450' },
@@ -11,7 +11,7 @@ const FILMS = [
   { title: 'Shadows at 4PM', duration: '5:12', desc: 'One building, twelve hours of light',           youtubeId: 'xhP06L6XDTU', thumb: 'https://picsum.photos/seed/film4/800/450' },
   { title: 'The Threshold',  duration: '8:44', desc: 'Doorways as architectural narrative',           youtubeId: 'YFJHkFrCFGU', thumb: 'https://picsum.photos/seed/film5/800/450' },
   { title: 'White Rooms',    duration: '3:20', desc: 'Interior spaces shot at dusk',                  youtubeId: 'BVfMBzBiLMs', thumb: 'https://picsum.photos/seed/film6/800/450' },
-  { title: 'Grain & Steel',  duration: '7:02', desc: 'Industrial renovation in Chennai',              youtubeId: 'KyBpI5B3fDA', thumb: 'https://picsum.photos/seed/film7/800/450' },
+  { title: 'Grain & Steel',  duration: '7:02', desc: 'Industrial renovation in Bangalore',              youtubeId: 'KyBpI5B3fDA', thumb: 'https://picsum.photos/seed/film7/800/450' },
   { title: 'Open House',     duration: '2:58', desc: 'A family home, documented over a year',         youtubeId: 'xhP06L6XDTU', thumb: 'https://picsum.photos/seed/film8/800/450' },
 ]
 

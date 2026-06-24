@@ -2,7 +2,7 @@ import { useState, lazy, Suspense, Component, ReactNode } from 'react'
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence, motion } from 'framer-motion'
 import Nav from './components/Nav'
-import Footer from './components/Footer'
+import FooterSection from './components/FooterSection'
 import LoadingScreen from './components/LoadingScreen'
 import Home from './pages/Home'
 import ArchitecturePage from './pages/ArchitecturePage'
@@ -90,7 +90,7 @@ function AnimatedRoutes() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/contact" element={<ContactPage />} />
         </Routes>
-        {!hideFooter && <Footer />}
+        {!hideFooter && <FooterSection />}
       </motion.div>
     </AnimatePresence>
   )

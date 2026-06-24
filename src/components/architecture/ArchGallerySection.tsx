@@ -1,14 +1,14 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 
-const GOLD = '#C9A35F'
+const GOLD = '#0096E6'
 
 const T = {
   bg:     '#F5F1EA',
   bgAlt:  '#EDEAE2',
   ink:    '#0E0E0C',
   muted:  '#8A847C',
-  accent: '#B8956A',
+  accent: '#0096E6',
   border: '#DDD8D0',
 }
 
@@ -28,7 +28,7 @@ const INTERIOR = [
     architect: 'TEAL Architects',
     src: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=900&q=90&auto=format&fit=crop',
     span: 'md:col-span-4',
-    aspect: 'aspect-[3/4]',
+    aspect: 'aspect-[4/5]',
   },
   {
     name: 'The Glass Atelier',
@@ -71,7 +71,7 @@ const EXTERIOR = [
     location: 'Whitefield, Bangalore',
     src: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200&q=90&auto=format&fit=crop',
     span: 'md:col-span-4',
-    aspect: 'aspect-[3/4]',
+    aspect: 'aspect-[4/5]',
   },
   {
     name: 'The Brick House',
@@ -92,7 +92,7 @@ const EXTERIOR = [
     location: 'Mumbai',
     src: 'https://images.unsplash.com/photo-1574362848149-11496d93a7c7?w=900&q=90&auto=format&fit=crop',
     span: 'md:col-span-4',
-    aspect: 'aspect-[3/4]',
+    aspect: 'aspect-[4/5]',
   },
 ]
 

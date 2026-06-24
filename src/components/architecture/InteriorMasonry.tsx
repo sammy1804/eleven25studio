@@ -2,10 +2,10 @@ import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { useIsMobile } from '../../hooks/useIsMobile'
 
-const GOLD = '#C9A35F'
+const GOLD = '#0096E6'
 
 const PROJECTS = [
-  { name: 'The Living Cave',       location: 'Chennai',     architect: 'Studio Arka',        seed: 'int1',  tall: true  },
+  { name: 'The Living Cave',       location: 'Bangalore',     architect: 'Studio Arka',        seed: 'int1',  tall: true  },
   { name: 'Glass & Shadow',        location: 'Hyderabad',   architect: 'Morphogenesis',      seed: 'int2s', tall: false },
   { name: 'Warm Concrete Loft',    location: 'Bengaluru',   architect: 'Biome Solutions',    seed: 'int3',  tall: true  },
   { name: 'The Quiet Study',       location: 'Kochi',       architect: 'Malabar Arch',       seed: 'int4',  tall: false },
