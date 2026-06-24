@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { MapPin, ExternalLink, LayoutGrid, Globe } from 'lucide-react'
 // @ts-ignore
 import DomeGallery from '../components/DomeGallery'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 const DOME_IMAGES = [
   { src: 'https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=900&q=90&auto=format&fit=crop', alt: 'Architecture' },
@@ -325,6 +326,7 @@ export default function GalleryPage() {
   const [view, setView] = useState<'collection' | 'dome'>('collection')
   const [activeCollection, setActiveCollection] = useState('all')
   const [lightbox, setLightbox] = useState<{ src: string; alt: string } | null>(null)
+  const isMobile = useIsMobile()
 
   const filtered = activeCollection === 'all'
     ? ITEMS
@@ -354,11 +356,56 @@ export default function GalleryPage() {
 
   return (
     <div style={{ background: T.bg, minHeight: '100vh' }}>
+      {/* ── Mobile: horizontal collection tabs ── */}
+      {isMobile && (
+        <div
+          style={{
+            position: 'sticky',
+            top: 56,
+            zIndex: 40,
+            background: T.bg,
+            borderBottom: `1px solid ${T.border}`,
+            paddingTop: 10,
+            paddingBottom: 10,
+            paddingLeft: 16,
+            paddingRight: 16,
+            overflowX: 'auto',
+            display: 'flex',
+            gap: 8,
+            scrollbarWidth: 'none',
+          }}
+        >
+          {COLLECTIONS.map(col => (
+            <button
+              key={col.id}
+              onClick={() => setActiveCollection(col.id)}
+              style={{
+                flexShrink: 0,
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 11,
+                letterSpacing: '0.08em',
+                whiteSpace: 'nowrap',
+                padding: '6px 14px',
+                borderRadius: 20,
+                border: `1px solid ${activeCollection === col.id ? T.ink : T.border}`,
+                background: activeCollection === col.id ? T.ink : 'transparent',
+                color: activeCollection === col.id ? '#F5F1EA' : T.muted,
+                cursor: 'pointer',
+                transition: 'all 0.18s',
+              }}
+            >
+              {col.label}
+            </button>
+          ))}
+        </div>
+      )}
+
       <div
         className="flex"
-        style={{ maxWidth: 1400, margin: '0 auto', padding: '0 24px', paddingTop: 80 }}
+        style={{ maxWidth: 1400, margin: '0 auto', padding: isMobile ? '0 16px' : '0 24px', paddingTop: isMobile ? 24 : 80 }}
       >
-        {/* ── Sidebar ── */}
+        {/* ── Desktop Sidebar ── */}
+        {!isMobile && (
         <aside
           style={{
             width: 220,
@@ -435,9 +482,10 @@ export default function GalleryPage() {
             </div>
           </div>
         </aside>
+        )}
 
         {/* ── Masonry grid ── */}
-        <main style={{ flex: 1, paddingLeft: 24, paddingTop: 40, paddingBottom: 60 }}>
+        <main style={{ flex: 1, paddingLeft: isMobile ? 0 : 24, paddingTop: isMobile ? 16 : 40, paddingBottom: 80 }}>
           {/* Header bar */}
           <div
             className="flex items-center justify-between mb-6"
@@ -457,9 +505,11 @@ export default function GalleryPage() {
                 {filtered.length} items
               </span>
             </div>
-            <p className="font-sans text-[11px]" style={{ color: '#C5BFB8' }}>
-              Eleven25 Studio · Bangalore
-            </p>
+            {!isMobile && (
+              <p className="font-sans text-[11px]" style={{ color: '#C5BFB8' }}>
+                Eleven25 Studio · Bangalore
+              </p>
+            )}
           </div>
 
           {/* Columns masonry */}
@@ -471,8 +521,8 @@ export default function GalleryPage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
               style={{
-                columns: '3 220px',
-                columnGap: 10,
+                columns: isMobile ? '2 140px' : '3 220px',
+                columnGap: isMobile ? 8 : 10,
               }}
             >
               {filtered.map((item, i) => (
