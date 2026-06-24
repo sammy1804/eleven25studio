@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const GOLD = '#C9A35F'
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -13,6 +14,7 @@ const QUOTE_LINES = [
 export default function AboutOpening() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
+  const isMobile = useIsMobile()
 
   return (
     <section
@@ -28,8 +30,8 @@ export default function AboutOpening() {
         padding: 'clamp(80px, 10vh, 120px) clamp(1.5rem, 5vw, 5rem)',
       }}
     >
-      {/* Portrait — absolute right */}
-      <motion.div
+      {/* Portrait — absolute right (hidden on mobile) */}
+      {!isMobile && <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1, delay: 0.6, ease: EASE }}
@@ -64,7 +66,7 @@ export default function AboutOpening() {
             filter: 'brightness(0.7) grayscale(20%)',
           }}
         />
-      </motion.div>
+      </motion.div>}
 
       {/* Centered content */}
       <div ref={ref} style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: 800 }}>

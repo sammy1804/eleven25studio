@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const BLUE = '#3D7BFF'
 
@@ -45,6 +46,7 @@ function BrandCard({ brand, delay = 0 }: { brand: (typeof BRANDS)[0]; delay?: nu
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
   const [hovered, setHovered] = useState(false)
+  const isMobile = useIsMobile()
 
   return (
     <motion.div
@@ -52,7 +54,7 @@ function BrandCard({ brand, delay = 0 }: { brand: (typeof BRANDS)[0]; delay?: nu
       initial={{ opacity: 0, y: 24 }}
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1], delay }}
-      style={{ gridArea: brand.gridArea, position: 'relative', overflow: 'hidden', cursor: 'pointer' }}
+      style={{ gridArea: isMobile ? undefined : brand.gridArea, position: 'relative', overflow: 'hidden', cursor: 'pointer', aspectRatio: isMobile ? '1/1' : undefined }}
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
     >
@@ -94,6 +96,7 @@ function BrandCard({ brand, delay = 0 }: { brand: (typeof BRANDS)[0]; delay?: nu
 export default function BrandBento() {
   const headRef = useRef<HTMLDivElement>(null)
   const headInView = useInView(headRef, { once: true, margin: '-60px' })
+  const isMobile = useIsMobile()
 
   return (
     <section style={{ background: '#F7F7F7', padding: 'clamp(4rem, 8vh, 7rem) clamp(1.5rem, 5vw, 5rem)' }}>
@@ -119,12 +122,13 @@ export default function BrandBento() {
 
         {/* Bento grid */}
         <div
-          style={{
+          style={isMobile ? {
             display: 'grid',
-            gridTemplateAreas: `
-              "a a b c"
-              "d d b e"
-            `,
+            gridTemplateColumns: '1fr 1fr',
+            gap: 8,
+          } : {
+            display: 'grid',
+            gridTemplateAreas: `"a a b c" "d d b e"`,
             gridTemplateColumns: '1fr 1fr 1fr 1fr',
             gridTemplateRows: '320px 320px',
             gap: 10,

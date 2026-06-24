@@ -1,5 +1,6 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const BLUE = '#3D7BFF'
 
@@ -12,12 +13,13 @@ const HERO_IMAGES = [
 export default function FashionHero() {
   const [hoveredImg, setHoveredImg] = useState<number | null>(null)
   const [ctaHov, setCtaHov] = useState(false)
+  const isMobile = useIsMobile()
 
   return (
     <section style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', background: '#ffffff', overflow: 'hidden' }}>
 
-      {/* Top 60vh — 3 images */}
-      <div style={{ height: '60vh', display: 'flex', gap: 0 }}>
+      {/* Top — 3 images */}
+      <div style={{ height: isMobile ? '45vw' : '60vh', minHeight: isMobile ? 180 : undefined, display: 'flex', gap: 0 }}>
         {HERO_IMAGES.map((src, i) => (
           <motion.div
             key={src}
@@ -44,13 +46,13 @@ export default function FashionHero() {
         ))}
       </div>
 
-      {/* Bottom 40vh — text */}
+      {/* Bottom — text */}
       <div style={{
         flex: 1,
         display: 'grid',
-        gridTemplateColumns: '1fr 1fr',
-        gap: 40,
-        padding: 'clamp(32px, 5vh, 56px) clamp(32px, 5vw, 80px)',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+        gap: isMobile ? 20 : 40,
+        padding: isMobile ? '28px 20px' : 'clamp(32px, 5vh, 56px) clamp(32px, 5vw, 80px)',
         alignItems: 'center',
       }}>
         {/* Left */}

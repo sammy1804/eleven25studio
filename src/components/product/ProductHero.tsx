@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const GOLD = '#C9A35F'
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -43,6 +44,7 @@ function HeroCell({ src, delay }: { src: string; delay: number }) {
 export default function ProductHero() {
   const [cta1Hov, setCta1Hov] = useState(false)
   const [cta2Hov, setCta2Hov] = useState(false)
+  const isMobile = useIsMobile()
 
   return (
     <section
@@ -55,10 +57,10 @@ export default function ProductHero() {
         overflow: 'hidden',
       }}
     >
-      <div style={{ maxWidth: 1400, margin: '0 auto', width: '100%', display: 'flex', alignItems: 'center', gap: 'clamp(2rem, 4vw, 6rem)' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', width: '100%', display: 'flex', flexDirection: isMobile ? 'column' : 'row', alignItems: isMobile ? 'flex-start' : 'center', gap: isMobile ? '2rem' : 'clamp(2rem, 4vw, 6rem)' }}>
 
-        {/* Left — 45% */}
-        <div style={{ flex: '0 0 45%', maxWidth: '45%' }}>
+        {/* Left — text */}
+        <div style={{ flex: isMobile ? '1 1 auto' : '0 0 45%', maxWidth: isMobile ? '100%' : '45%' }}>
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -153,8 +155,8 @@ export default function ProductHero() {
           </motion.div>
         </div>
 
-        {/* Right — 55% 2×2 grid */}
-        <div style={{ flex: '0 0 55%', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
+        {/* Right — 2×2 grid */}
+        <div style={{ flex: isMobile ? '1 1 auto' : '0 0 55%', width: isMobile ? '100%' : undefined, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 }}>
           {HERO_IMAGES.map((src, i) => (
             <HeroCell key={src} src={src} delay={0.15 + i * 0.1} />
           ))}

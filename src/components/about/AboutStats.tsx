@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const GOLD = '#C9A35F'
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -14,6 +15,7 @@ const STATS = [
 export default function AboutStats() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
+  const isMobile = useIsMobile()
 
   return (
     <section style={{ background: '#F5F4F1', padding: 'clamp(4rem, 8vh, 7rem) clamp(1.5rem, 5vw, 5rem)' }}>
@@ -36,7 +38,7 @@ export default function AboutStats() {
           • The Work So Far
         </motion.p>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 0 }}>
           {STATS.map((stat, i) => (
             <motion.div
               key={stat.label}
@@ -46,7 +48,7 @@ export default function AboutStats() {
               style={{
                 padding: 'clamp(1.5rem, 3vw, 3rem)',
                 borderTop: '1px solid #DDDBD7',
-                borderLeft: i > 0 ? '1px solid #DDDBD7' : 'none',
+                borderLeft: (!isMobile && i > 0) || (isMobile && i % 2 !== 0) ? '1px solid #DDDBD7' : 'none',
               }}
             >
               <span

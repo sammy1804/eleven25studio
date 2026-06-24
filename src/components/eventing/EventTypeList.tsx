@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const PURPLE = '#A78BFA'
 const BOUNCE = [0.34, 1.56, 0.64, 1] as const
@@ -91,10 +92,11 @@ function ListItem({ label, index, delay }: { label: string; index: number; delay
 export default function EventTypeList() {
   const leftRef = useRef<HTMLDivElement>(null)
   const leftInView = useInView(leftRef, { once: true, margin: '-60px' })
+  const isMobile = useIsMobile()
 
   return (
     <section style={{ background: '#F5F4F1', padding: 'clamp(4rem, 8vh, 7rem) clamp(1.5rem, 5vw, 5rem)', borderTop: '1px solid #E5E2DB' }}>
-      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 1.4fr', gap: 'clamp(3rem, 6vw, 8rem)', alignItems: 'start' }}>
+      <div style={{ maxWidth: 1400, margin: '0 auto', display: 'grid', gridTemplateColumns: isMobile ? '1fr' : '1fr 1.4fr', gap: isMobile ? '2rem' : 'clamp(3rem, 6vw, 8rem)', alignItems: 'start' }}>
 
         {/* Left */}
         <motion.div
