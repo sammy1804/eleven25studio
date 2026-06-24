@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const GOLD = '#C9A35F'
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -25,6 +26,7 @@ const SERVICES = [
 export default function ServicesBreakdown() {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-60px' })
+  const isMobile = useIsMobile()
 
   return (
     <section style={{ background: '#0A0A0A', padding: 'clamp(4rem, 8vh, 7rem) clamp(1.5rem, 5vw, 5rem)' }}>
@@ -41,7 +43,7 @@ export default function ServicesBreakdown() {
         </motion.p>
 
         {/* 3 columns */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 0 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 0 }}>
           {SERVICES.map((svc, si) => (
             <motion.div
               key={svc.num}
@@ -50,7 +52,8 @@ export default function ServicesBreakdown() {
               transition={{ duration: 0.65, delay: si * 0.1, ease: EASE }}
               style={{
                 padding: 'clamp(1.5rem, 3vw, 2.5rem)',
-                borderLeft: si > 0 ? '1px solid #2A2A2A' : 'none',
+                borderLeft: !isMobile && si > 0 ? '1px solid #2A2A2A' : 'none',
+                borderTop: isMobile && si > 0 ? '1px solid #2A2A2A' : 'none',
               }}
             >
               <p style={{

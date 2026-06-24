@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const GOLD = '#C9A35F'
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -42,6 +43,7 @@ const DISCIPLINES = [
 function DisciplineRow({ d, isLast }: { d: (typeof DISCIPLINES)[0]; isLast: boolean }) {
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
+  const isMobile = useIsMobile()
 
   return (
     <>
@@ -52,14 +54,14 @@ function DisciplineRow({ d, isLast }: { d: (typeof DISCIPLINES)[0]; isLast: bool
         transition={{ duration: 0.9, ease: EASE }}
         style={{
           display: 'flex',
-          gap: 'clamp(2rem, 5vw, 6rem)',
-          alignItems: 'center',
-          padding: 'clamp(3rem, 6vh, 5rem) 0',
-          flexDirection: d.imgLeft ? 'row' : 'row-reverse',
+          gap: 'clamp(1.5rem, 4vw, 6rem)',
+          alignItems: isMobile ? 'flex-start' : 'center',
+          padding: 'clamp(2rem, 5vh, 4rem) 0',
+          flexDirection: isMobile ? 'column' : (d.imgLeft ? 'row' : 'row-reverse'),
         }}
       >
         {/* Image */}
-        <div style={{ flex: '0 0 45%', overflow: 'hidden', aspectRatio: '4/3' }}>
+        <div style={{ flex: isMobile ? '1 1 auto' : '0 0 45%', width: isMobile ? '100%' : undefined, overflow: 'hidden', aspectRatio: '4/3' }}>
           <img
             src={d.imgSrc}
             alt={d.label}

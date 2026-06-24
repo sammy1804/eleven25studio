@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const PURPLE = '#A78BFA'
 const BOUNCE = [0.34, 1.56, 0.64, 1] as const
@@ -12,6 +13,7 @@ const HERO_IMAGES = [
 
 export default function EventHero() {
   const [ctaHov, setCtaHov] = useState(false)
+  const isMobile = useIsMobile()
 
   return (
     <section
@@ -26,8 +28,8 @@ export default function EventHero() {
     >
       <div style={{ maxWidth: 1400, margin: '0 auto', width: '100%', display: 'flex', alignItems: 'center', gap: 'clamp(2rem, 4vw, 5rem)' }}>
 
-        {/* Left — 45% text */}
-        <div style={{ flex: '0 0 45%', maxWidth: '45%' }}>
+        {/* Left — text */}
+        <div style={{ flex: isMobile ? '1 1 auto' : '0 0 45%', maxWidth: isMobile ? '100%' : '45%' }}>
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -110,8 +112,8 @@ export default function EventHero() {
           </motion.a>
         </div>
 
-        {/* Right — 55% collage */}
-        <div
+        {/* Right — collage (hidden on mobile) */}
+        {!isMobile && <div
           style={{
             flex: '0 0 55%',
             position: 'relative',
@@ -211,7 +213,7 @@ export default function EventHero() {
               zIndex: 0,
             }}
           />
-        </div>
+        </div>}
 
       </div>
     </section>

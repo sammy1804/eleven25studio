@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const BLUE = '#3D7BFF'
 
@@ -64,6 +65,7 @@ function CampaignCard({
   const ref = useRef<HTMLDivElement>(null)
   const inView = useInView(ref, { once: true, margin: '-80px' })
   const [hovered, setHovered] = useState(false)
+  const isMobile = useIsMobile()
 
   return (
     <motion.div
@@ -72,7 +74,7 @@ function CampaignCard({
       animate={inView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1], delay: (index % 2) * 0.12 }}
       style={{
-        flex: campaign.wide ? '0 0 65%' : '0 0 35%',
+        flex: isMobile ? '1 1 auto' : (campaign.wide ? '0 0 65%' : '0 0 35%'),
         display: 'flex',
         flexDirection: 'column',
         gap: 16,
@@ -150,6 +152,7 @@ function CampaignCard({
 export default function EditorialGrid() {
   const titleRef = useRef<HTMLDivElement>(null)
   const titleInView = useInView(titleRef, { once: true, margin: '-60px' })
+  const isMobile = useIsMobile()
 
   // Pair campaigns: 0+1, 2+3, 4+5 — alternate which is wide/narrow
   const pairs = [
@@ -187,14 +190,14 @@ export default function EditorialGrid() {
         </motion.div>
 
         {/* Campaign pairs */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(3rem, 6vh, 5rem)' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(2rem, 5vh, 4rem)' }}>
           {pairs.map(([a, b], pairIdx) => (
             <div
               key={a.title}
               style={{
                 display: 'flex',
-                gap: 'clamp(16px, 2vw, 32px)',
-                flexDirection: pairIdx % 2 === 0 ? 'row' : 'row-reverse',
+                gap: 'clamp(12px, 2vw, 32px)',
+                flexDirection: isMobile ? 'column' : (pairIdx % 2 === 0 ? 'row' : 'row-reverse'),
               }}
             >
               <CampaignCard campaign={a} index={pairIdx * 2} />

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const GOLD = '#C9A35F'
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -77,6 +78,7 @@ export default function AboutFilms() {
   const headRef = useRef<HTMLDivElement>(null)
   const headInView = useInView(headRef, { once: true, margin: '-60px' })
   const [linkHov, setLinkHov] = useState(false)
+  const isMobile = useIsMobile()
 
   return (
     <section style={{ background: '#F5F4F1', padding: 'clamp(4rem, 8vh, 7rem) clamp(1.5rem, 5vw, 5rem)' }}>
@@ -102,7 +104,7 @@ export default function AboutFilms() {
         </motion.div>
 
         {/* 3-col grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'clamp(20px, 3vw, 36px)', marginBottom: 40 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? '1fr' : 'repeat(3, 1fr)', gap: 'clamp(16px, 3vw, 36px)', marginBottom: 40 }}>
           {FILMS.map((film, i) => (
             <FilmCard key={film.title} film={film} delay={i * 0.12} />
           ))}

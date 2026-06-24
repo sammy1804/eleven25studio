@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const PURPLE = '#A78BFA'
 const BOUNCE = [0.34, 1.56, 0.64, 1] as const
@@ -9,6 +10,7 @@ export default function EventContactCTA() {
   const inView = useInView(ref, { once: true, margin: '-60px' })
 
   const [form, setForm] = useState({ event: '', date: '', email: '' })
+  const isMobile = useIsMobile()
   const [submitHov, setSubmitHov] = useState(false)
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -61,8 +63,8 @@ export default function EventContactCTA() {
           maxWidth: 1200,
           margin: '0 auto',
           display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 'clamp(3rem, 6vw, 8rem)',
+          gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+          gap: isMobile ? '2.5rem' : 'clamp(3rem, 6vw, 8rem)',
           alignItems: 'start',
         }}
       >

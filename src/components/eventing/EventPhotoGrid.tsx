@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const PURPLE = '#A78BFA'
 const BOUNCE = [0.34, 1.56, 0.64, 1] as const
@@ -95,12 +96,14 @@ export default function EventPhotoGrid() {
   const headRef = useRef<HTMLDivElement>(null)
   const headInView = useInView(headRef, { once: true, margin: '-60px' })
   const [active, setActive] = useState<EventType>('All')
+  const isMobile = useIsMobile()
 
   const filtered = active === 'All' ? PHOTOS : PHOTOS.filter(p => p.type === active)
 
-  // Split into 4 columns
-  const cols: Photo[][] = [[], [], [], []]
-  filtered.forEach((p, i) => cols[i % 4].push(p))
+  // Split into columns: 2 on mobile, 4 on desktop
+  const numCols = isMobile ? 2 : 4
+  const cols: Photo[][] = Array.from({ length: numCols }, () => [])
+  filtered.forEach((p, i) => cols[i % numCols].push(p))
 
   return (
     <section
@@ -156,7 +159,7 @@ export default function EventPhotoGrid() {
 
         {/* 4-col masonry */}
         <AnimatePresence mode="popLayout">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 4, alignItems: 'start' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(4, 1fr)', gap: 4, alignItems: 'start' }}>
             {cols.map((col, ci) => (
               <div key={ci} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                 {col.map((photo, pi) => (

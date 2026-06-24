@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import { motion, useInView } from 'framer-motion'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const GOLD = '#C9A35F'
 const EASE = [0.22, 1, 0.36, 1] as const
@@ -72,6 +73,7 @@ function GridItem({ item, delay }: { item: (typeof ITEMS)[0]; delay: number }) {
 export default function CommercialGrid() {
   const headRef = useRef<HTMLDivElement>(null)
   const headInView = useInView(headRef, { once: true, margin: '-60px' })
+  const isMobile = useIsMobile()
 
   return (
     <section
@@ -101,7 +103,7 @@ export default function CommercialGrid() {
         </motion.div>
 
         {/* 3-col grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 'clamp(16px, 2.5vw, 32px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(3, 1fr)', gap: 'clamp(12px, 2.5vw, 32px)' }}>
           {ITEMS.map((item, i) => (
             <GridItem key={item.name} item={item} delay={(i % 3) * 0.08} />
           ))}
