@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, useInView, AnimatePresence } from 'framer-motion'
 import { useCountUp } from '../hooks/useCountUp'
+import { useIsMobile } from '../hooks/useIsMobile'
 import HomeHeroScroll from '../components/HomeHeroScroll'
 import StatsBento from '../components/home/StatsBento'
 import ServicesScrollSection from '../components/home/ServicesScrollSection'
@@ -231,6 +232,7 @@ function ServiceCard({ svc, index }: { svc: typeof SERVICES[0]; index: number })
 /*  HOME PAGE                                               */
 /* ════════════════════════════════════════════════════════ */
 export default function Home() {
+  const isMobile = useIsMobile()
   return (
     <div style={{ background: C.bg, color: C.dark }}>
 
@@ -289,7 +291,14 @@ export default function Home() {
       <TestimonialsSection />
 
       {/* ══ CONTACT CTA ══════════════════════════════════ */}
-      <section style={{ padding: '120px clamp(40px, 6vw, 100px)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 80, alignItems: 'center', borderTop: `1px solid rgba(26,26,26,0.08)` }}>
+      <section style={{
+        padding: isMobile ? '72px 24px' : '120px clamp(40px, 6vw, 100px)',
+        display: 'grid',
+        gridTemplateColumns: isMobile ? '1fr' : '1fr 1fr',
+        gap: isMobile ? 48 : 80,
+        alignItems: 'center',
+        borderTop: `1px solid rgba(26,26,26,0.08)`,
+      }}>
         <Reveal>
           <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', color: C.mid, marginBottom: 24 }}>
             Start a Project
@@ -297,8 +306,8 @@ export default function Home() {
           <h2 style={{
             fontFamily: "'Poppins', sans-serif",
             fontWeight: 900,
-            fontSize: 'clamp(40px, 5.5vw, 80px)',
-            lineHeight: 0.9,
+            fontSize: 'clamp(36px, 5.5vw, 80px)',
+            lineHeight: 1.0,
             letterSpacing: '-0.04em',
             textTransform: 'uppercase',
             color: C.dark,
@@ -343,14 +352,14 @@ export default function Home() {
                 key={item.label}
                 style={{
                   background: 'rgba(26,26,26,0.04)',
-                  padding: '28px 24px',
+                  padding: isMobile ? '20px 16px' : '28px 24px',
                   borderTop: `2px solid ${C.dark}`,
                 }}
               >
                 <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 9, letterSpacing: '0.2em', textTransform: 'uppercase', color: C.mid, marginBottom: 8 }}>
                   {item.label}
                 </div>
-                <div style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: 13, color: C.dark, lineHeight: 1.4 }}>
+                <div style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 500, fontSize: isMobile ? 12 : 13, color: C.dark, lineHeight: 1.4 }}>
                   {item.value}
                 </div>
               </div>

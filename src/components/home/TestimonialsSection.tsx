@@ -304,7 +304,7 @@ export default function TestimonialsSection() {
         </motion.div>
 
         {/* Image masonry grid */}
-        <MasonryGrid columns={columns} gap={4} style={{ marginBottom: 72 }}>
+        <MasonryGrid columns={columns} gap={4} style={{ marginBottom: columns === 1 ? 48 : 72 }}>
           {SHOWCASE.map((item, i) => (
             <ShowcaseCard key={i} {...item} />
           ))}
@@ -316,7 +316,7 @@ export default function TestimonialsSection() {
             display: 'flex',
             justifyContent: 'center',
             gap: 14,
-            maxHeight: 580,
+            maxHeight: columns === 1 ? 400 : 580,
             overflow: 'hidden',
             maskImage:
               'linear-gradient(to bottom, transparent 0%, black 15%, black 85%, transparent 100%)',

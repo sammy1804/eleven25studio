@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom'
+import { useIsMobile } from '../hooks/useIsMobile'
 
 /* ── Polaroid photos ───────────────────────────────────── */
 const POLAROIDS = [
@@ -84,6 +85,7 @@ const makeVariants = (rotate: number, delay: number) => ({
 /* ── Footer ────────────────────────────────────────────── */
 export default function FooterSection() {
   const [hoveredPhoto, setHoveredPhoto] = useState<number | null>(null)
+  const isMobile = useIsMobile()
 
   return (
     <footer style={{ background: '#0a0a0a', color: '#ffffff' }}>
@@ -91,7 +93,9 @@ export default function FooterSection() {
       {/* ── Top: headline + contact ── */}
       <div
         style={{
-          padding: 'clamp(64px, 8vh, 100px) clamp(40px, 6vw, 100px) 0',
+          padding: isMobile
+            ? '48px 24px 0'
+            : 'clamp(64px, 8vh, 100px) clamp(40px, 6vw, 100px) 0',
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'flex-start',
@@ -122,7 +126,7 @@ export default function FooterSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          style={{ textAlign: 'right' }}
+          style={{ textAlign: isMobile ? 'left' : 'right' }}
         >
           {[
             'No.12, Nungambakkam High Rd',
@@ -149,36 +153,43 @@ export default function FooterSection() {
       {/* ── Polaroid photo strip ── */}
       <div
         style={{
-          padding: '56px clamp(40px, 6vw, 100px) 72px',
+          padding: isMobile
+            ? '40px 24px 56px'
+            : '56px clamp(40px, 6vw, 100px) 72px',
           display: 'flex',
           alignItems: 'flex-end',
           position: 'relative',
+          overflowX: isMobile ? 'auto' : 'visible',
+          overflowY: 'visible',
         }}
       >
         {POLAROIDS.map((photo, i) => {
           const isHov = hoveredPhoto === i
+          const mobileScale = 0.72
+          const mobileWidth = Math.round(photo.width * mobileScale)
+          const w = isMobile ? mobileWidth : photo.width
           return (
             <motion.div
               key={i}
               variants={makeVariants(photo.rotate, i * 0.1)}
               initial="hidden"
               whileInView="visible"
-              whileHover="hover"
+              whileHover={isMobile ? undefined : 'hover'}
               viewport={{ once: true }}
-              onMouseEnter={() => setHoveredPhoto(i)}
-              onMouseLeave={() => setHoveredPhoto(null)}
+              onMouseEnter={() => !isMobile && setHoveredPhoto(i)}
+              onMouseLeave={() => !isMobile && setHoveredPhoto(null)}
               style={{
                 position: 'relative',
                 zIndex: isHov ? 20 : 1,
                 background: '#ffffff',
-                padding: '7px 7px 30px',
+                padding: isMobile ? '5px 5px 22px' : '7px 7px 30px',
                 borderRadius: 3,
                 boxShadow: isHov
                   ? '0 28px 70px rgba(0,0,0,0.85), 0 4px 16px rgba(0,0,0,0.5)'
                   : '0 10px 36px rgba(0,0,0,0.65)',
                 cursor: 'pointer',
                 flexShrink: 0,
-                marginLeft: i === 0 ? 0 : -44,
+                marginLeft: i === 0 ? 0 : isMobile ? -28 : -44,
                 transition: 'box-shadow 0.35s ease',
               }}
             >
@@ -186,8 +197,8 @@ export default function FooterSection() {
                 src={photo.src}
                 alt=""
                 style={{
-                  width: photo.width,
-                  height: Math.round(photo.width * 0.78),
+                  width: w,
+                  height: Math.round(w * 0.78),
                   objectFit: 'cover',
                   display: 'block',
                 }}
@@ -200,26 +211,26 @@ export default function FooterSection() {
       {/* ── Bottom: tagline + nav columns ── */}
       <div
         style={{
-          padding: '48px clamp(40px, 6vw, 100px) 48px',
+          padding: isMobile ? '36px 24px 40px' : '48px clamp(40px, 6vw, 100px) 48px',
           borderTop: '1px solid rgba(255,255,255,0.06)',
           display: 'grid',
-          gridTemplateColumns: '1fr repeat(3, auto)',
-          gap: 'clamp(28px, 5vw, 80px)',
+          gridTemplateColumns: isMobile ? '1fr 1fr' : '1fr repeat(3, auto)',
+          gap: isMobile ? 32 : 'clamp(28px, 5vw, 80px)',
           alignItems: 'start',
         }}
       >
-        {/* Brand tagline */}
-        <div>
+        {/* Brand tagline — full width on mobile */}
+        <div style={isMobile ? { gridColumn: '1 / -1' } : {}}>
           <img
             src="/logo_white.png"
             alt="Eleven25 Studios"
-            style={{ height: 28, marginBottom: 36, display: 'block' }}
+            style={{ height: 24, marginBottom: 28, display: 'block' }}
           />
           <p
             style={{
               fontFamily: "'Poppins', sans-serif",
               fontWeight: 700,
-              fontSize: 'clamp(18px, 2.2vw, 28px)',
+              fontSize: isMobile ? 20 : 'clamp(18px, 2.2vw, 28px)',
               lineHeight: 1.2,
               color: '#ffffff',
               margin: '0 0 2px',
@@ -232,10 +243,10 @@ export default function FooterSection() {
             style={{
               fontFamily: "'Poppins', sans-serif",
               fontWeight: 700,
-              fontSize: 'clamp(18px, 2.2vw, 28px)',
+              fontSize: isMobile ? 20 : 'clamp(18px, 2.2vw, 28px)',
               lineHeight: 1.2,
               color: 'rgba(255,255,255,0.25)',
-              margin: '0 0 44px',
+              margin: '0 0 32px',
               letterSpacing: '-0.025em',
             }}
           >

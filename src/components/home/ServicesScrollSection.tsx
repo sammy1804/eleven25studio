@@ -2,6 +2,7 @@ import { useRef, useEffect, useState } from 'react'
 import { motion, AnimatePresence, useScroll } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
 import { Link } from 'react-router-dom'
+import { useIsMobile } from '../../hooks/useIsMobile'
 
 const SERVICES = [
   {
@@ -43,6 +44,7 @@ const SERVICES = [
 ]
 
 export default function ServicesScrollSection() {
+  const isMobile = useIsMobile()
   const sectionRef = useRef<HTMLElement>(null)
   const { scrollYProgress } = useScroll({
     target: sectionRef,
@@ -51,18 +53,94 @@ export default function ServicesScrollSection() {
   const [activeIndex, setActiveIndex] = useState(0)
 
   useEffect(() => {
+    if (isMobile) return
     return scrollYProgress.on('change', (v) => {
       setActiveIndex(Math.min(Math.floor(v * SERVICES.length), SERVICES.length - 1))
     })
-  }, [scrollYProgress])
+  }, [scrollYProgress, isMobile])
 
   const scrollToService = (index: number) => {
     if (!sectionRef.current) return
     const sectionTop =
       sectionRef.current.getBoundingClientRect().top + window.scrollY
-    // Each service occupies 1 viewport-height of scroll travel
     const target = sectionTop + index * window.innerHeight
     window.scrollTo({ top: target, behavior: 'smooth' })
+  }
+
+  /* ── Mobile: simple tap-accordion ── */
+  const [mobileOpen, setMobileOpen] = useState(0)
+
+  if (isMobile) {
+    return (
+      <section style={{ background: '#F8F7F4', borderTop: '1px solid rgba(26,26,26,0.08)' }}>
+        {/* Background strip */}
+        <div style={{ position: 'relative', height: 220, overflow: 'hidden' }}>
+          <img
+            src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=900&q=80&auto=format&fit=crop"
+            alt=""
+            style={{ width: '100%', height: '100%', objectFit: 'cover', filter: 'brightness(0.48)' }}
+          />
+          <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', justifyContent: 'flex-end', padding: '24px 24px' }}>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, letterSpacing: '0.24em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.55)', margin: '0 0 6px' }}>
+              • What we do
+            </p>
+            <h2 style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: 26, color: '#fff', margin: 0, letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+              Our Services
+            </h2>
+          </div>
+        </div>
+
+        {/* Accordion list */}
+        <div style={{ background: '#ffffff' }}>
+          {SERVICES.map((service, i) => (
+            <div key={service.num} style={{ borderBottom: '1px solid #ECEAE4' }}>
+              <div
+                onClick={() => setMobileOpen(mobileOpen === i ? -1 : i)}
+                style={{ display: 'flex', alignItems: 'center', gap: 16, padding: '20px 24px', cursor: 'pointer' }}
+              >
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 900, fontSize: 28, color: mobileOpen === i ? '#1A1A1A' : 'rgba(26,26,26,0.18)', letterSpacing: '-0.04em', lineHeight: 1, minWidth: 44 }}>
+                  {service.num}
+                </span>
+                <span style={{ fontFamily: "'Poppins', sans-serif", fontWeight: 600, fontSize: 18, color: mobileOpen === i ? '#1A1A1A' : 'rgba(26,26,26,0.55)', letterSpacing: '-0.02em', flex: 1 }}>
+                  {service.title}
+                </span>
+                <motion.div animate={{ rotate: mobileOpen === i ? 90 : 0 }} transition={{ duration: 0.25 }}>
+                  <ArrowRight size={18} color="#1A1A1A" />
+                </motion.div>
+              </div>
+              <AnimatePresence initial={false}>
+                {mobileOpen === i && (
+                  <motion.div
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ overflow: 'hidden' }}
+                  >
+                    <div style={{ padding: '0 24px 24px 24px' }}>
+                      <img
+                        src={service.image}
+                        alt={service.title}
+                        style={{ width: '100%', height: 160, objectFit: 'cover', borderRadius: 10, display: 'block', marginBottom: 14 }}
+                      />
+                      <p style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 300, fontSize: 13, color: '#888', lineHeight: 1.8, margin: '0 0 16px' }}>
+                        {service.description}
+                      </p>
+                      <Link
+                        to={service.href}
+                        style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontFamily: "'DM Sans', sans-serif", fontWeight: 400, fontSize: 12, color: '#1A1A1A', textDecoration: 'none', borderBottom: '1px solid rgba(26,26,26,0.35)', paddingBottom: 2 }}
+                      >
+                        {service.cta} <ArrowRight size={12} />
+                      </Link>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          ))}
+        </div>
+      </section>
+    )
   }
 
   return (
