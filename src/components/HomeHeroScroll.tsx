@@ -49,7 +49,7 @@ export default function HomeHeroScroll() {
             fontFamily: "'Poppins', sans-serif",
             fontWeight: 900,
             fontSize: 64,
-            lineHeight: 1.0,
+            lineHeight: 0.8,
             letterSpacing: '-0.03em',
             color: '#1A1A1A',
             margin: 0,
@@ -69,7 +69,7 @@ export default function HomeHeroScroll() {
             color: '#888888',
             lineHeight: 1.7,
             maxWidth: 420,
-            margin: '20px auto 0',
+            margin: '10px auto 0',
           }}
         >
           Architecture · Fashion · Events · Corporate — visual stories crafted with intention.
